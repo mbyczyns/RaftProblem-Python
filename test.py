@@ -1,4 +1,3 @@
-tab=['asdidsi']
+tab=[3,4,6,3,1]
 for element in tab:
-    for micro in element:
-        print(micro+"djdj")
+    print(tab.index(element))

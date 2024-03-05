@@ -6,17 +6,24 @@ def checkBalance(upperRaft, lowerRaft,passengers):  # funkcja obliczająca nier�
     halfRaftLen = len(lowerRaft)
     upperForce = 0
     lowerForce = 0
-    for i in range(halfRaftLen):
-        lowerRowWeight = 0
-        for seat in lowerRaft[halfRaftLen+i]:
-            lowerRowWeight+=passengers[seat]
-        lowerForce += ((i+1)*lowerRowWeight)
-        upperRowWeight=0
-        for seat in upperRaft[halfRaftLen-1-i]:
-            upperRowWeight+=passengers[seat]
-        upperForce += ((i+1)*upperRowWeight)
-    disbalance = abs(lowerForce-upperForce)
-    return disbalance
+    for upperRow in upperRaft:
+        rowWeight=0
+        for seat in upperRow:
+            rowWeight+=passengers[seat]
+        dist = halfRaftLen - upperRaft.index(upperRow)
+        lever = dist*rowWeight
+        upperForce+=lever
+
+    for lowerRow in lowerRaft:
+        rowWeight=0
+        for seat in lowerRow:
+            rowWeight+=passengers[seat]
+        dist = lowerRaft.index(lowerRow) + 1
+        lever = dist * rowWeight
+        lowerForce+=lever
+
+    return abs(lowerForce-upperForce)
+
 
 
 def bForce(upperRaft, lowerRaft, raft_len, raft_wid, passengers):  # kompletny brute force, testuje wszystkie możliwe kombinacje
