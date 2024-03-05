@@ -1,8 +1,11 @@
 import random
-from itertools import permutations
+import functions
+import time
 
 
-pcount = 32
+raft_len = 2  # musi być parzyste
+raft_wid = 2
+pcount = raft_wid*raft_len
 passengers = []  # wagi pasażerów, każdy waży losowo od 50 do 120kg
 for i in range(pcount):
     x = random.randint(50, 120)
@@ -11,49 +14,28 @@ for i in range(pcount):
 # F = m * r
 # zakładamy że odległość między siedzeniami jest równa 1 m
 
-raft_len = 8  # musi być parzyste
-raft_wid = 4
+
 upperRaft = [[0]*raft_wid for x in range(int(raft_len/2))]  # górna połowa tratwy
 lowerRaft = [[0]*raft_wid for x in range(int(raft_len/2))]  # dolna połowa tratwy
 fullRaft = upperRaft+lowerRaft
-for x in fullRaft:
-    print(x)
 
+upperRaft[0][0] = 2
+upperRaft[0][1] = 1
+upperRaft[1][0] = 4
+upperRaft[1][1] = 7
+lowerRaft[0][0] = 0
+lowerRaft[0][1] = 3
+lowerRaft[1][1] = 6
+lowerRaft[1][1] = 5
 
-def checkBalance(upperRaft, lowerRaft,passengers):  # funkcja obliczająca nierównowage pomiędzy stronami tratwy
-    halfRaftLen = int(len(lowerRaft))
-    upperForce = 0
-    lowerForce = 0
-    for i in range(halfRaftLen):  # obliczam sile dolnej polowy tratwy
-        rowWeight=0
-        for seat in lowerRaft[i]:
-            rowWeight+=passengers[seat]
-        lowerForce += i*rowWeight
+# start = time.time()
+# disb, raft = functions.bForce(upperRaft,lowerRaft,raft_len,raft_wid,passengers)
+# for element in raft:
+#     print(element)
+# print(disb)
+# print(time.time()-start)
 
-        rowWeight=0
-        for seat in lowerRaft[halfRaftLen-i]:
-            rowWeight+=passengers[seat]
-        upperForce += i*rowWeight
-
-    disbalance = abs(lowerForce-upperForce)
-    return disbalance
-
-
-def bForce():  # kompletny brute force, testuje wszystkie możliwe kombinacje
-    elements = list(range(raft_len * raft_wid))
-    all_permutations = permutations(elements)
-    tempRaft = [[0] * raft_wid for _ in range(raft_len)]
-    halfRaftLen = int(raft_len/2)
-    for permutation in all_permutations:
-        for i in range(raft_len):
-            for j in range(raft_wid):
-                tempRaft[i][j] = permutation[i * raft_wid + j]
-        upperRaft = tempRaft[:halfRaftLen]
-        lowerRaft = tempRaft[halfRaftLen:]
-        checkBalance(upperRaft, lowerRaft, passengers)
-    return 0
-
-
-def improved_bForce():  # poprawiony brute force, uwzględnione jest to że pasażerowie siedzący w róznych miejscach w tym samym rzedzie nic nie zmieniają
-
-    return 0
+print(functions.checkBalance(upperRaft, lowerRaft, passengers))
+print(passengers)
+print(upperRaft)
+print(lowerRaft)
