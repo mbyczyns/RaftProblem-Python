@@ -25,27 +25,30 @@ def checkBalance(upperRaft, lowerRaft,passengers):  # funkcja obliczająca nier�
     return abs(lowerForce-upperForce)
 
 
-
-def bForce(upperRaft, lowerRaft, raft_len, raft_wid, passengers):  # kompletny brute force, testuje wszystkie możliwe kombinacje
+def bForce(raft_len, raft_wid, passengers):  # kompletny brute force, testuje wszystkie możliwe kombinacje
     elements = list(range(raft_len * raft_wid))
-    potentialDisbalance=10000000
+    potentialDisbalance = 10000000
     all_permutations = permutations(elements)
-    tempRaft = [[0] * raft_wid for _ in range(raft_len)]
     potentialRaft = [[0] * raft_wid for _ in range(raft_len)]
-    halfRaftLen = int(raft_len/2)
-    z=0
+    halfRaftLen = raft_len//2
     for permutation in all_permutations:
+        tempRaft = [[0] * raft_wid for _ in range(raft_len)]
         for i in range(raft_len):
             for j in range(raft_wid):
                 tempRaft[i][j] = permutation[i * raft_wid + j]
+        for row in tempRaft:
+            print(row)
         upperRaft = tempRaft[:halfRaftLen]
         lowerRaft = tempRaft[halfRaftLen:]
         tempDisbalance = checkBalance(upperRaft, lowerRaft, passengers)
-        if(tempDisbalance)<potentialDisbalance:
+        print(tempDisbalance)
+        print("----------------")
+        if(tempDisbalance<potentialDisbalance):
             potentialRaft = tempRaft
             potentialDisbalance = tempDisbalance
-        z+=1
-        print(z)
+    print("=============")
+    for row in potentialRaft:
+        print(row)
     return potentialDisbalance, potentialRaft
 
 
